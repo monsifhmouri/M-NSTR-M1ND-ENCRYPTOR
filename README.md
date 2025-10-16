@@ -4,6 +4,7 @@
 
 **🔗 التطبيق المباشر:**  
 [https://monsifhmouri.github.io/M-NSTR-M1ND-ENCRYPTOR/](https://monsifhmouri.github.io/M-NSTR-M1ND-ENCRYPTOR/)
+paswwrd : fuckyou
 
 ## ✨ الميزات
 - تشفير AES-256, AES-192, AES-128
