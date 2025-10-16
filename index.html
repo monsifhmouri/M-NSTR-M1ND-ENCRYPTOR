@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MØNSTR-M1ND | ENCRYPTOR v1.6.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00ff00;
+            --secondary-color: #121212;
+            --accent-color: #1e1e1e;
+            --text-color: #ffffff;
+            --error-color: #ff4444;
+            --success-color: #00ff00;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--primary-color);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        .subtitle {
+            color: #cccccc;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .language-selector {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .language-selector select {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: 1px solid var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tab-button {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .tab-button:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .tab-button.active {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: var(--accent-color);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        textarea, input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #2a2a2a;
+            color: var(--primary-color);
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-option input {
+            margin-left: 10px;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-option input {
+            margin-left: 10px;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 10px;
+            background: #2a2a2a;
+            outline: none;
+            border-radius: 5px;
+        }
+        
+        .slider-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .button {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .button:hover {
+            background-color: #00cc00;
+            transform: translateY(-2px);
+        }
+        
+        .button-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .button-secondary:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+        
+        .result-container {
+            margin-top: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid var(--primary-color);
+            margin-top: 30px;
+            color: #cccccc;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 4px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .alert-success {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        
+        .alert-error {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                width: 100%;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MØNSTR-M1ND | ENCRYPTOR v1.6.0</h1>
+            <p class="subtitle" id="subtitle">من إنتاج: Mr. MØNSTR-M1ND (2025)</p>
+            
+            <div class="language-selector">
+                <label for="language">اللغة:</label>
+                <select id="language">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-button active" data-tab="encrypt">🔒 تشفير الرسالة</button>
+            <button class="tab-button" data-tab="decrypt">🔓 فك التشفير</button>
+            <button class="tab-button" data-tab="password">🔑 إنشاء كلمة مرور قوية</button>
+        </div>
+        
+        <!-- تبويب التشفير -->
+        <div id="encrypt" class="tab-content active">
+            <h2 class="tab-title" id="encrypt-title">تشفير الرسالة</h2>
+            
+            <div class="form-group">
+                <label id="encrypt-method-label">طريقة التشفير:</label>
+                <div class="radio-group" id="encryption-modes">
+                    <!-- سيتم تعبئته بواسطة JavaScript -->
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label id="encrypt-text-label">النص المراد تشفيره:</label>
+                <textarea id="encrypt-text" placeholder="أدخل النص الذي تريد تشفيره هنا..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label id="encrypt-password-label">كلمة المرور:</label>
+                <input type="password" id="encrypt-password" placeholder="أدخل كلمة المرور للتشفير">
+            </div>
+            
+            <button class="button" id="encrypt-button">🔒 تشفير</button>
+            
+            <div class="result-container">
+                <label id="encrypt-result-label">النص المشفر:</label>
+                <textarea id="encrypt-result" readonly></textarea>
+                
+                <div class="button-group">
+                    <button class="button button-secondary" id="copy-encrypt">نسخ النص المشفر</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- تبويب فك التشفير -->
+        <div id="decrypt" class="tab-content">
+            <h2 class="tab-title" id="decrypt-title">فك تشفير الرسالة</h2>
+            
+            <div class="form-group">
+                <label id="decrypt-text-label">النص المشفر:</label>
+                <textarea id="decrypt-text" placeholder="أدخل النص المشفر هنا..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label id="decrypt-password-label">كلمة المرور:</label>
+                <input type="password" id="decrypt-password" placeholder="أدخل كلمة المرور لفك التشفير">
+            </div>
+            
+            <button class="button" id="decrypt-button">🔓 فك التشفير</button>
+            
+            <div class="result-container">
+                <label id="decrypt-result-label">النص الأصلي:</label>
+                <textarea id="decrypt-result" readonly></textarea>
+            </div>
+        </div>
+        
+        <!-- تبويب إنشاء كلمات المرور -->
+        <div id="password" class="tab-content">
+            <h2 class="tab-title" id="password-title">مولد كلمات المرور القوية</h2>
+            
+            <div class="form-group">
+                <label id="password-length-label">طول كلمة المرور: <span id="length-value">16</span></label>
+                <div class="slider-container">
+                    <input type="range" id="password-length" class="slider" min="8" max="64" value="16">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label id="password-options-label">خيارات كلمة المرور:</label>
+                <div class="checkbox-group" id="password-options">
+                    <!-- سيتم تعبئته بواسطة JavaScript -->
+                </div>
+            </div>
+            
+            <button class="button" id="generate-password">إنشاء كلمة مرور</button>
+            
+            <div class="result-container">
+                <label id="password-result-label">كلمة المرور المُنشأة:</label>
+                <input type="text" id="password-result" readonly>
+                
+                <div class="button-group">
+                    <button class="button button-secondary" id="copy-password">نسخ كلمة المرور</button>
+                    <button class="button button-secondary" id="save-password">حفظ في ملف</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>MØNSTR-M1ND | ENCRYPTOR v1.6.0</p>
+            <div class="contact-info">
+                <p>Telegram: @monstr_m1nd</p>
+                <p>Group: BlackHat MCA 4HKRS</p>
+                <p>BTC Donation: 12w4jBxtUopH29c31HVaUxUquwDzGiwk8a</p>
+                <p>Channel: <a href="https://t.me/MCA_4HKRS" style="color: #00ff00;">https://t.me/MCA_4HKRS</a></p>
+                <p>Download Tool: <a href="https://mega.nz/file/yNk3yR6B#lN15v8YVhiPltioy4r4YB1AcJJjt4ZV6mad6A5hRg6A" style="color: #00ff00;">MEGA Download</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- تضمين مكتبة CryptoJS للتشفير -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    
+    <script>
+        // نصوص التطبيق بلغتين
+        const texts = {
+            ar: {
+                title: "MØNSTR-M1ND | ENCRYPTOR v1.6.0",
+                subtitle: "من إنتاج: Mr. MØNSTR-M1ND (2025)",
+                encryptTab: "تشفير الرسالة",
+                decryptTab: "فك تشفير الرسالة",
+                passwordTab: "مولد كلمات المرور القوية",
+                encryptBtn: "🔒 تشفير الرسالة",
+                decryptBtn: "🔓 فك التشفير",
+                passwordBtn: "🔑 إنشاء كلمة مرور قوية",
+                encryptionMethod: "طريقة التشفير:",
+                passwordLabel: "كلمة المرور:",
+                encryptInputLabel: "النص المراد تشفيره:",
+                decryptInputLabel: "النص المشفر:",
+                encryptResultLabel: "النص المشفر:",
+                decryptResultLabel: "النص الأصلي:",
+                passwordLengthLabel: "طول كلمة المرور:",
+                uppercase: "أحرف كبيرة (A-Z)",
+                lowercase: "أحرف صغيرة (a-z)",
+                digits: "أرقام (0-9)",
+                symbols: "رموز خاصة (!@#$%...)",
+                generatePasswordBtn: "إنشاء كلمة مرور",
+                passwordResultLabel: "كلمة المرور المُنشأة:",
+                copyEncryptBtn: "نسخ النص المشفر",
+                copyPasswordBtn: "نسخ كلمة المرور",
+                savePasswordBtn: "حفظ في ملف",
+                errorEmpty: "النص أو كلمة المرور لا يمكن أن تكون فارغة",
+                errorEncrypt: "فشل في التشفير: {}",
+                errorDecrypt: "فشل في فك التشفير: {}",
+                successEncrypt: "تم تشفير الرسالة بنجاح!",
+                successDecrypt: "تم فك تشفير الرسالة بنجاح!",
+                errorNoPassword: "لا توجد كلمة مرور لحفظها",
+                successCopy: "تم النسخ بنجاح!",
+                successSave: "تم حفظ كلمة المرور في الملف",
+                errorSave: "فشل في حفظ الملف: {}",
+                errorNoChars: "يجب اختيار نوع واحد على الأقل من الأحرف",
+                languageLabel: "اللغة:",
+                encryptButton: "🔒 تشفير",
+                decryptButton: "🔓 فك التشفير"
+            },
+            en: {
+                title: "MØNSTR-M1ND | ENCRYPTOR v1.6.0",
+                subtitle: "Developed by: Mr. MØNSTR-M1ND (2025)",
+                encryptTab: "Encrypt Message",
+                decryptTab: "Decrypt Message",
+                passwordTab: "Strong Password Generator",
+                encryptBtn: "🔒 Encrypt Message",
+                decryptBtn: "🔓 Decrypt Message",
+                passwordBtn: "🔑 Generate Strong Password",
+                encryptionMethod: "Encryption Method:",
+                passwordLabel: "Password:",
+                encryptInputLabel: "Text to Encrypt:",
+                decryptInputLabel: "Encrypted Text:",
+                encryptResultLabel: "Encrypted Text:",
+                decryptResultLabel: "Original Text:",
+                passwordLengthLabel: "Password Length:",
+                uppercase: "Uppercase Letters (A-Z)",
+                lowercase: "Lowercase Letters (a-z)",
+                digits: "Digits (0-9)",
+                symbols: "Special Characters (!@#$%...)",
+                generatePasswordBtn: "Generate Password",
+                passwordResultLabel: "Generated Password:",
+                copyEncryptBtn: "Copy Encrypted Text",
+                copyPasswordBtn: "Copy Password",
+                savePasswordBtn: "Save to File",
+                errorEmpty: "Text or password cannot be empty",
+                errorEncrypt: "Encryption failed: {}",
+                errorDecrypt: "Decryption failed: {}",
+                successEncrypt: "Message encrypted successfully!",
+                successDecrypt: "Message decrypted successfully!",
+                errorNoPassword: "No password to save",
+                successCopy: "Copied successfully!",
+                successSave: "Password saved to file",
+                errorSave: "Failed to save file: {}",
+                errorNoChars: "At least one character type must be selected",
+                languageLabel: "Language:",
+                encryptButton: "🔒 Encrypt",
+                decryptButton: "🔓 Decrypt"
+            }
+        };
+
+        // حالات التطبيق
+        let currentLanguage = 'ar';
+        let encryptionModes = [
+            { name: "AES-256", text: { ar: "AES-256 (الأقوى، وقت الكسر التقديري: 10^77 سنة)", en: "AES-256 (Strongest, Est. Break Time: 10^77 years)" } },
+            { name: "AES-192", text: { ar: "AES-192 (قوي، وقت الكسر التقديري: 10^57 سنة)", en: "AES-192 (Strong, Est. Break Time: 10^57 years)" } },
+            { name: "AES-128", text: { ar: "AES-128 (متوسط، وقت الكسر التقديري: 10^38 سنة)", en: "AES-128 (Moderate, Est. Break Time: 10^38 years)" } }
+        ];
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // إعداد اختيار اللغة
+            const languageSelect = document.getElementById('language');
+            languageSelect.value = currentLanguage;
+            languageSelect.addEventListener('change', function() {
+                currentLanguage = this.value;
+                updateLanguage();
+            });
+
+            // إعداد التبويبات
+            setupTabs();
+            
+            // إعداد خيارات التشفير
+            setupEncryptionModes();
+            
+            // إعداد خيارات كلمات المرور
+            setupPasswordOptions();
+            
+            // إعداد الأحداث
+            setupEvents();
+            
+            // تحديث اللغة
+            updateLanguage();
+        }
+
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // إخفاء جميع المحتويات
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // إلغاء تنشيط جميع الأزرار
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // عرض المحتوى المحدد وتنشيط الزر
+                    document.getElementById(tabId).classList.add('active');
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function setupEncryptionModes() {
+            const encryptionModesContainer = document.getElementById('encryption-modes');
+            
+            encryptionModes.forEach((mode, index) => {
+                const radioOption = document.createElement('div');
+                radioOption.className = 'radio-option';
+                
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.name = 'encryption-mode';
+                radioInput.value = mode.name;
+                radioInput.id = `mode-${mode.name}`;
+                if (index === 0) radioInput.checked = true;
+                
+                const radioLabel = document.createElement('label');
+                radioLabel.setAttribute('for', `mode-${mode.name}`);
+                radioLabel.textContent = mode.text[currentLanguage];
+                
+                radioOption.appendChild(radioInput);
+                radioOption.appendChild(radioLabel);
+                
+                encryptionModesContainer.appendChild(radioOption);
+            });
+        }
+
+        function setupPasswordOptions() {
+            const passwordOptionsContainer = document.getElementById('password-options');
+            const passwordOptions = [
+                { id: 'uppercase', label: { ar: 'أحرف كبيرة (A-Z)', en: 'Uppercase Letters (A-Z)' } },
+                { id: 'lowercase', label: { ar: 'أحرف صغيرة (a-z)', en: 'Lowercase Letters (a-z)' } },
+                { id: 'digits', label: { ar: 'أرقام (0-9)', en: 'Digits (0-9)' } },
+                { id: 'symbols', label: { ar: 'رموز خاصة (!@#$%...)', en: 'Special Characters (!@#$%...)' } }
+            ];
+            
+            passwordOptions.forEach(option => {
+                const checkboxOption = document.createElement('div');
+                checkboxOption.className = 'checkbox-option';
+                
+                const checkboxInput = document.createElement('input');
+                checkboxInput.type = 'checkbox';
+                checkboxInput.id = option.id;
+                checkboxInput.checked = true;
+                
+                const checkboxLabel = document.createElement('label');
+                checkboxLabel.setAttribute('for', option.id);
+                checkboxLabel.textContent = option.label[currentLanguage];
+                
+                checkboxOption.appendChild(checkboxInput);
+                checkboxOption.appendChild(checkboxLabel);
+                
+                passwordOptionsContainer.appendChild(checkboxOption);
+            });
+            
+            // إعداد شريط التمرير لطول كلمة المرور
+            const passwordLengthSlider = document.getElementById('password-length');
+            const lengthValue = document.getElementById('length-value');
+            
+            passwordLengthSlider.addEventListener('input', function() {
+                lengthValue.textContent = this.value;
+            });
+        }
+
+        function setupEvents() {
+            // زر التشفير
+            document.getElementById('encrypt-button').addEventListener('click', encryptMessage);
+            
+            // زر فك التشفير
+            document.getElementById('decrypt-button').addEventListener('click', decryptMessage);
+            
+            // زر إنشاء كلمة المرور
+            document.getElementById('generate-password').addEventListener('click', generatePassword);
+            
+            // زر نسخ النص المشفر
+            document.getElementById('copy-encrypt').addEventListener('click', copyEncryptedText);
+            
+            // زر نسخ كلمة المرور
+            document.getElementById('copy-password').addEventListener('click', copyPassword);
+            
+            // زر حفظ كلمة المرور
+            document.getElementById('save-password').addEventListener('click', savePassword);
+        }
+
+        function updateLanguage() {
+            const lang = currentLanguage;
+            const t = texts[lang];
+            
+            // تحديث العناوين
+            document.querySelector('h1').textContent = t.title;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            
+            // تحديث أزرار التبويبات
+            document.querySelector('[data-tab="encrypt"]').textContent = t.encryptBtn;
+            document.querySelector('[data-tab="decrypt"]').textContent = t.decryptBtn;
+            document.querySelector('[data-tab="password"]').textContent = t.passwordBtn;
+            
+            // تحديث عناوين التبويبات
+            document.getElementById('encrypt-title').textContent = t.encryptTab;
+            document.getElementById('decrypt-title').textContent = t.decryptTab;
+            document.getElementById('password-title').textContent = t.passwordTab;
+            
+            // تحديث التبويب الأول (تشفير)
+            document.getElementById('encrypt-method-label').textContent = t.encryptionMethod;
+            document.getElementById('encrypt-text-label').textContent = t.encryptInputLabel;
+            document.getElementById('encrypt-password-label').textContent = t.passwordLabel;
+            document.getElementById('encrypt-button').textContent = t.encryptButton;
+            document.getElementById('encrypt-result-label').textContent = t.encryptResultLabel;
+            document.getElementById('copy-encrypt').textContent = t.copyEncryptBtn;
+            
+            // تحديث خيارات التشفير
+            const encryptionModeLabels = document.querySelectorAll('#encryption-modes label');
+            encryptionModes.forEach((mode, index) => {
+                encryptionModeLabels[index].textContent = mode.text[lang];
+            });
+            
+            // تحديث التبويب الثاني (فك التشفير)
+            document.getElementById('decrypt-text-label').textContent = t.decryptInputLabel;
+            document.getElementById('decrypt-password-label').textContent = t.passwordLabel;
+            document.getElementById('decrypt-button').textContent = t.decryptButton;
+            document.getElementById('decrypt-result-label').textContent = t.decryptResultLabel;
+            
+            // تحديث التبويب الثالث (كلمات المرور)
+            document.getElementById('password-length-label').innerHTML = t.passwordLengthLabel + ' <span id="length-value">16</span>';
+            document.getElementById('password-options-label').textContent = t.passwordOptionsLabel || "خيارات كلمة المرور:";
+            document.getElementById('generate-password').textContent = t.generatePasswordBtn;
+            document.getElementById('password-result-label').textContent = t.passwordResultLabel;
+            document.getElementById('copy-password').textContent = t.copyPasswordBtn;
+            document.getElementById('save-password').textContent = t.savePasswordBtn;
+            
+            // تحديث خيارات كلمات المرور
+            const passwordOptionLabels = document.querySelectorAll('#password-options label');
+            const passwordOptions = [
+                { ar: 'أحرف كبيرة (A-Z)', en: 'Uppercase Letters (A-Z)' },
+                { ar: 'أحرف صغيرة (a-z)', en: 'Lowercase Letters (a-z)' },
+                { ar: 'أرقام (0-9)', en: 'Digits (0-9)' },
+                { ar: 'رموز خاصة (!@#$%...)', en: 'Special Characters (!@#$%...)' }
+            ];
+            
+            passwordOptions.forEach((option, index) => {
+                passwordOptionLabels[index].textContent = option[lang];
+            });
+            
+            // تحديث النصوص في حقول الإدخال
+            document.getElementById('encrypt-text').placeholder = lang === 'ar' ? 'أدخل النص الذي تريد تشفيره هنا...' : 'Enter the text you want to encrypt here...';
+            document.getElementById('encrypt-password').placeholder = lang === 'ar' ? 'أدخل كلمة المرور للتشفير' : 'Enter password for encryption';
+            document.getElementById('decrypt-text').placeholder = lang === 'ar' ? 'أدخل النص المشفر هنا...' : 'Enter encrypted text here...';
+            document.getElementById('decrypt-password').placeholder = lang === 'ar' ? 'أدخل كلمة المرور لفك التشفير' : 'Enter password for decryption';
+        }
+
+        function showAlert(message, type) {
+            // إزالة أي تنبيهات سابقة
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            // إنشاء التنبيه الجديد
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            // إضافة التنبيه إلى بداية المحتوى النشط
+            const activeTab = document.querySelector('.tab-content.active');
+            activeTab.insertBefore(alert, activeTab.firstChild);
+            
+            // إزالة التنبيه بعد 5 ثوانٍ
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function encryptMessage() {
+            const message = document.getElementById('encrypt-text').value.trim();
+            const password = document.getElementById('encrypt-password').value.trim();
+            
+            if (!message || !password) {
+                showAlert(texts[currentLanguage].errorEmpty, 'error');
+                return;
+            }
+            
+            try {
+                // استخدام AES للتشفير
+                const encrypted = CryptoJS.AES.encrypt(message, password).toString();
+                document.getElementById('encrypt-result').value = encrypted;
+                showAlert(texts[currentLanguage].successEncrypt, 'success');
+            } catch (error) {
+                showAlert(texts[currentLanguage].errorEncrypt.replace('{}', error.message), 'error');
+            }
+        }
+
+        function decryptMessage() {
+            const encryptedMessage = document.getElementById('decrypt-text').value.trim();
+            const password = document.getElementById('decrypt-password').value.trim();
+            
+            if (!encryptedMessage || !password) {
+                showAlert(texts[currentLanguage].errorEmpty, 'error');
+                return;
+            }
+            
+            try {
+                // استخدام AES لفك التشفير
+                const decrypted = CryptoJS.AES.decrypt(encryptedMessage, password).toString(CryptoJS.enc.Utf8);
+                
+                if (!decrypted) {
+                    showAlert(texts[currentLanguage].errorDecrypt.replace('{}', 'Invalid password or encrypted text'), 'error');
+                    return;
+                }
+                
+                document.getElementById('decrypt-result').value = decrypted;
+                showAlert(texts[currentLanguage].successDecrypt, 'success');
+            } catch (error) {
+                showAlert(texts[currentLanguage].errorDecrypt.replace('{}', error.message), 'error');
+            }
+        }
+
+        function generatePassword() {
+            const length = parseInt(document.getElementById('password-length').value);
+            const uppercase = document.getElementById('uppercase').checked;
+            const lowercase = document.getElementById('lowercase').checked;
+            const digits = document.getElementById('digits').checked;
+            const symbols = document.getElementById('symbols').checked;
+            
+            let characters = '';
+            if (uppercase) characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (lowercase) characters += 'abcdefghijklmnopqrstuvwxyz';
+            if (digits) characters += '0123456789';
+            if (symbols) characters += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            if (!characters) {
+                showAlert(texts[currentLanguage].errorNoChars, 'error');
+                return;
+            }
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                password += characters[randomIndex];
+            }
+            
+            document.getElementById('password-result').value = password;
+        }
+
+        function copyEncryptedText() {
+            const encryptedText = document.getElementById('encrypt-result').value;
+            if (encryptedText) {
+                navigator.clipboard.writeText(encryptedText)
+                    .then(() => showAlert(texts[currentLanguage].successCopy, 'success'))
+                    .catch(err => console.error('Failed to copy: ', err));
+            }
+        }
+
+        function copyPassword() {
+            const password = document.getElementById('password-result').value;
+            if (password) {
+                navigator.clipboard.writeText(password)
+                    .then(() => showAlert(texts[currentLanguage].successCopy, 'success'))
+                    .catch(err => console.error('Failed to copy: ', err));
+            }
+        }
+
+        function savePassword() {
+            const password = document.getElementById('password-result').value;
+            if (!password) {
+                showAlert(texts[currentLanguage].errorNoPassword, 'error');
+                return;
+            }
+            
+            try {
+                const blob = new Blob([password + '\n'], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'generated_passwords.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showAlert(texts[currentLanguage].successSave, 'success');
+            } catch (error) {
+                showAlert(texts[currentLanguage].errorSave.replace('{}', error.message), 'error');
+            }
+        }
+    </script>
+</body>
+</html>
