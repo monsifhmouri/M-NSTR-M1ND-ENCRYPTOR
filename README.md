@@ -4,6 +4,8 @@
 
 **🔗 التطبيق المباشر:**  
 [https://monsifhmouri.github.io/M-NSTR-M1ND-ENCRYPTOR/](https://monsifhmouri.github.io/M-NSTR-M1ND-ENCRYPTOR/)
+
+
 paswwrd : fuckyou
 
 ## ✨ الميزات
